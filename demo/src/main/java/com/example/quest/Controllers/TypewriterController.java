@@ -17,14 +17,14 @@ public class TypewriterController {
 
 	private final AtomicLong counter = new AtomicLong();
 
-	@GetMapping("/room/typewriter")
+	@GetMapping("/room/table/typewriter")
 	public Response typewriter_desc() {
 		var response_text="Old typewriter. One single phrase typed on top of the page:'dQ_4w9WgXcQ 2 3 w r'. It doesn't seem as something understandable,but is still somewhat familiar";
 
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 
-	@PutMapping("/room/typewriter")
+	@PutMapping("/room/table/typewriter")
 	public Response typewriter_note(@RequestBody Map<String, Object> payload) {
 		var response_text="You try to type something ona typewriter.";
         if (payload.keySet().contains("content"))
@@ -41,13 +41,13 @@ public class TypewriterController {
         return new Response(counter.incrementAndGet(), response_text);
 	}
 
-	@PostMapping("/room/typewriter")
+	@PostMapping("/room/table/typewriter")
 	public Response typewriter_object() {
 		var response_text="You want to use some object on typewriter.Unfortunately, you have none";
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 
-	@DeleteMapping("/room/typewriter")
+	@DeleteMapping("/room/table/typewriter")
 	public Response typewriter_hit() {
 		var response_text="You hit typewriter.It doesn't even move on slightest.You are hurt much more,on the other hand.";
 		return new Response(counter.incrementAndGet(), response_text);
