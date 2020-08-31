@@ -18,24 +18,49 @@ public class WindowController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/window")
-	public Response window_desc() {
+	public Response window_desc(@RequestBody Map<String, Object> payload) {
 		var response_text="The window.It looks like a hole in a wall with some darkish glass in it.";
         if (true)
             response_text=response_text+"Through broken window you can see nothing. It's not even empty space,it's just nothing.";
         else
             response_text=response_text+"It is impossible to see anything throgh glass. It feels as if you were staring at the wall";
-
-		return new Response(counter.incrementAndGet(), response_text);
+		var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		List<String> notes=NoteRepo.getAllNotesOrClues("window",name);
+		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}
 
 	@PutMapping("/room/window")
 	public Response window_note(@RequestBody Map<String, Object> payload) {
 		var response_text="You try to atttach note to the windows edge.";
+        var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
         if (payload.keySet().contains("content"))
+		{
 		    response_text="You write a note saying: '"+payload.get("content").toString()+"' and attach it.";
+			NoteRepo.createNote("window",payload.get("content").toString(),name);
+		}
         else
             response_text="You decide not to write anything.Note instantly disappiers";
-        return new Response(counter.incrementAndGet(), response_text);
+		
+        return new Response(counter.incrementAndGet(), response_text,name);
 	}
 
 	@PostMapping("/room/window")

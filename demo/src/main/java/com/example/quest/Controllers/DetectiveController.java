@@ -21,7 +21,7 @@ public class DetectiveController {
 
 	@GetMapping("/room/detective")
 	public Response detective_desc(@RequestBody Map<String, Object> payload) {
-		var response_text="You are the DETECTIVE.You generally look fine,most poeple would describe it as average.Not really an important person at all.";
+		var response_text="You are the DETECTIVE.You generally look fine,most people would describe it as average.Not really an important person at all.";
 		var name="";
         if (payload.keySet().contains("name"))
 		{
