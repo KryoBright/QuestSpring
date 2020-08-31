@@ -6,7 +6,7 @@ public class Note{
     
     Integer id;
 
-    String ownerId="";
+    String owner="";
 
     boolean isClue=false;
 

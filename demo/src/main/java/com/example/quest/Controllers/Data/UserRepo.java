@@ -58,4 +58,13 @@ public class UserRepo{
         return true;
     }
 
+    static boolean messageTW(String key,String text)
+    {
+        if (!users.containsKey(key))
+            return false;
+        else 
+            users.get(key).typeWriterQueue=users.get(key).typeWriterQueue+text+"\n";
+        return true;
+    }
+
 }

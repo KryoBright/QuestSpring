@@ -36,7 +36,7 @@ public class NoteRepo{
         Note tmpUs=new Note();
         tmpUs.id=notes.size();
         tmpUs.text=txt;
-        tmpUs.isClue=true;
+        tmpUs.isClue=false;
         tmpUs.object=obj;
         tmpUs.owner=ownr;
         
@@ -47,20 +47,20 @@ public class NoteRepo{
     static List<String> getAllNotesOrClues(String obj,String ownr)
     {
         List<String> a=new ArrayList<String>();
-        for (Note n:notes)
+        for (Note n:notes.values())
         {
             String t="";
             if (n.object==obj)
             {
                 if(n.isClue)
                 {
-                    t="Clue: "+n.text+" \n";
+                    t="Clue: "+n.text;
                 }
                 else
                 {
                     if(n.owner==ownr)
                     {
-                        t="Your Note: "+n.text+" \n";
+                        t="Your Note: "+n.text;
                     }
                 }
             }
