@@ -17,15 +17,13 @@ public class WindowController {
 
 	private final AtomicLong counter = new AtomicLong();
 
-    var smashed=false;
-
 	@GetMapping("/room/window")
 	public Response window_desc() {
 		var response_text="The window.It looks like a hole in a wall with some darkish glass in it.";
-        if (smashed)
-            response_text=response_text+"Through broken window you can see nothing. It's not even empty space,it's just nothing."
+        if (true)
+            response_text=response_text+"Through broken window you can see nothing. It's not even empty space,it's just nothing.";
         else
-            response_text=response_text+"It is impossible to see anything throgh glass. It feels as if you were staring at the wall"
+            response_text=response_text+"It is impossible to see anything throgh glass. It feels as if you were staring at the wall";
 
 		return new Response(counter.incrementAndGet(), response_text);
 	}
@@ -49,15 +47,15 @@ public class WindowController {
 	@DeleteMapping("/room/window")
 	public Response window_hit() {
 		var response_text="";
-        if (!smashed)
+        if (!true)
         {
             response_text="You hit window with all your strength.It shatters.Now there is a considerable hole in it.";
-            smashed=true;
+            //smashed=true;
         }
         else
         {
             response_text="You stick you hand into window.Suddenly,glass starts to regenerate and painfully cuts your hand.You barely manage to escape";
-            smashed=false;
+            //smashed=false;
         }
 		return new Response(counter.incrementAndGet(), response_text);
 	}
