@@ -18,7 +18,7 @@ public class CookieController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/cookies")
-	public Response typewriter_desc() {
+	public Response typewriter_desc(@RequestBody Map<String, Object> payload) {
 		var response_text="Box full of fortune cookies. You take one. It says:'";
         var num=(new Random()).nextInt(10);
         switch(num)
@@ -45,23 +45,43 @@ public class CookieController {
             break;
             default:break;
         }
-		return new Response(counter.incrementAndGet(), response_text);
+        var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		List<String> notes=NoteRepo.getAllNotesOrClues("cookie",name);
+		return new Response(counter.incrementAndGet(), response_text,name,notes);=
 	}
 
 	@PutMapping("/room/table/cookies")
 	public Response typewriter_note(@RequestBody Map<String, Object> payload) {
 		var response_text="You try to attach note to cookie bottle.";
+        var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
         if (payload.keySet().contains("content"))
-        {
-		    response_text="You write : '"+payload.get("content").toString()+"'.";
-            response_text=response_text+"Typewriter makes a beeping sound as the new message appiers out of nowhere.";
-        }
+		{
+		    response_text="You write a note saying: '"+payload.get("content").toString()+"' and attach it.";
+			NoteRepo.createNote("cookie",payload.get("content").toString(),name);
+		}
         else
-        {
-            response_text="You decide not to write anything.";
-        }
-        
-        return new Response(counter.incrementAndGet(), response_text);
+            response_text="You decide not to write anything.Note instantly disappiers";
+		
+        return new Response(counter.incrementAndGet(), response_text,name);
 	}
 
 	@PostMapping("/room/table/cookies")

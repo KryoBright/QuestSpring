@@ -18,20 +18,45 @@ public class DresserController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/dresser")
-	public Response dresser_desc() {
+	public Response dresser_desc(@RequestBody Map<String, Object> payload) {
 		var response_text="A regular dresser it has dresses and suit inside.There is a keyhole on back of it";
-
-		return new Response(counter.incrementAndGet(), response_text);
+		var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		List<String> notes=NoteRepo.getAllNotesOrClues("dresser",name);
+		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}
 
 	@PutMapping("/room/dresser")
 	public Response dresser_note(@RequestBody Map<String, Object> payload) {
 		var response_text="You try to put note on door of dresser.";
+        var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
         if (payload.keySet().contains("content"))
-		    response_text="You write a note saying: '"+payload.get("content").toString()+"' and attach it";
+		{
+		    response_text="You write a note saying: '"+payload.get("content").toString()+"' and attach it.";
+			NoteRepo.createNote("dresser",payload.get("content").toString(),name);
+		}
         else
             response_text="You decide not to write anything.Note instantly disappiers";
-        return new Response(counter.incrementAndGet(), response_text);
+		
+        return new Response(counter.incrementAndGet(), response_text,name);
 	}
 
 	@PostMapping("/room/dresser")

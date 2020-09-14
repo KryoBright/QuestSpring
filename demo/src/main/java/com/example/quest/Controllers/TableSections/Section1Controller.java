@@ -21,7 +21,7 @@ public class Section1Controller {
 	public Response sec1_desc() {
 		var response_text="Top section under the table.It doesn't seem to have any kind of lock outside.";
         //retrive "if opened" from database
-        if (true)
+        //if (true)
             //retrive clues from database
 
 		return new Response(counter.incrementAndGet(), response_text);
