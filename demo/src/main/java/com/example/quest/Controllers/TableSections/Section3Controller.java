@@ -18,12 +18,12 @@ public class Section3Controller {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/sections/3")
-	public Response sec3_desc(@RequestBody Map<String, Object> payload) {
+	public Response sec3_desc(@RequestParam(value = "key", defaultValue = "noname") String key) {
 		var response_text="Lower section under the table.It has word lock for very long words.";
         //retrive "if opened" from database
-        if (payload.keySet().contains("key"))
+        if (!key.equals("noname"))
 		{
-			if (payload.get("key")=="key_encrypted")
+			if (key.equals("key_encrypted"))
 			{	
             //retrive clues from database
 			}

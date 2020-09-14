@@ -18,12 +18,12 @@ public class Section2Controller {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/sections/2")
-	public Response sec2_desc(@RequestBody Map<String, Object> payload) {
+	public Response sec2_desc(@RequestParam(value = "key", defaultValue = "noname") String key) {
 		var response_text="Middle section under the table.It has word lock for 11 symbols.";
         //retrive "if opened" from database
-        if (payload.keySet().contains("key"))
+        if (!key.equals("noname"))
 		{
-			if (payload.get("key")=="dqw4w9wgxcq")
+			if (key.equals("dqw4w9wgxcq"))
 			{	
             //retrive clues from database
 			}

@@ -18,16 +18,16 @@ public class WindowController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/window")
-	public Response window_desc(@RequestBody Map<String, Object> payload) {
+	public Response window_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="The window.It looks like a hole in a wall with some darkish glass in it.";
         if (true)
             response_text=response_text+"Through broken window you can see nothing. It's not even empty space,it's just nothing.";
         else
             response_text=response_text+"It is impossible to see anything throgh glass. It feels as if you were staring at the wall";
 		var name="";
-        if (payload.keySet().contains("name"))
+        if (!gotName.equals("noname"))
 		{
-			name=UserRepo.createUser(payload.get("name").toString());
+			name=UserRepo.createUser(gotName);
 		}
 		else
 		{

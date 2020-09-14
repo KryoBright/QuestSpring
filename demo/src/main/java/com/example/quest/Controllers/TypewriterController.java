@@ -18,9 +18,18 @@ public class TypewriterController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/typewriter")
-	public Response typewriter_desc() {
+	public Response typewriter_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="Old typewriter. One single phrase typed on top of the page:'dQ_4w9WgXcQ 2 3 w r'. It doesn't seem as something understandable,but is still somewhat familiar";
-
+		var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 
