@@ -18,50 +18,70 @@ public class CookieController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/cookies")
-	public Response typewriter_desc() {
+	public Response typewriter_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="Box full of fortune cookies. You take one. It says:'";
         var num=(new Random()).nextInt(10);
         switch(num)
         {
-            case 0:response_text=response_text+"Don't be lazy,and you won't end like him";
+            case 0:response_text=response_text+"Don't be lazy,and you won't end like him.";
             break;
-            case 2:response_text=response_text+"There are more people around you then you think";
+            case 2:response_text=response_text+"There are more people around you then you think.";
             break;
-            case 3:response_text=response_text+"Something about sad life and death";
+            case 3:response_text=response_text+"Something about sad life and death.";
             break;
-            case 4:response_text=response_text+"If you will try million times,William would be proud";
+            case 4:response_text=response_text+"If you will try million times,William would be proud.";
             break;
-            case 5:response_text=response_text+"Lock 2 has code 9123218";
+            case 5:response_text=response_text+"Lock 2 has code 9123218.";
             break;
             case 6:response_text=response_text+"Not the best way to work,isn't it?";
             break;
-            case 7:response_text=response_text+"There is no right or wrong solution";
+            case 7:response_text=response_text+"There is no right or wrong solution.";
             break;
-            case 8:response_text=response_text+"Punch your way out of this closed room";
+            case 8:response_text=response_text+"Punch your way out of this closed room.";
             break;
             case 9:response_text=response_text+"42";
             break;
-            case 1:response_text=response_text+"She still is in this room";
+            case 1:response_text=response_text+"She still is in this room.";
             break;
             default:break;
         }
-		return new Response(counter.incrementAndGet(), response_text);
+        var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		List<String> notes=NoteRepo.getAllNotesOrClues("cookie",name);
+		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}
 
 	@PutMapping("/room/table/cookies")
 	public Response typewriter_note(@RequestBody Map<String, Object> payload) {
 		var response_text="You try to attach note to cookie bottle.";
+        var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
         if (payload.keySet().contains("content"))
-        {
-		    response_text="You write : '"+payload.get("content").toString()+"'.";
-            response_text=response_text+"Typewriter makes a beeping sound as the new message appiers out of nowhere.";
-        }
+		{
+		    response_text="You write a note saying: '"+payload.get("content").toString()+"' and attach it.";
+			NoteRepo.createNote("cookie",payload.get("content").toString(),name);
+		}
         else
-        {
-            response_text="You decide not to write anything.";
-        }
-        
-        return new Response(counter.incrementAndGet(), response_text);
+            response_text="You decide not to write anything.Note instantly disappiers";
+		
+        return new Response(counter.incrementAndGet(), response_text,name);
 	}
 
 	@PostMapping("/room/table/cookies")

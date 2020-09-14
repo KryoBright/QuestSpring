@@ -18,20 +18,45 @@ public class TableController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table")
-	public Response table_desc() {
+	public Response table_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="This is the table.Probably the most ordinary one.There is typewriter on top of it,box of fortune cookies and 3 sections underneath";
-
-		return new Response(counter.incrementAndGet(), response_text);
+		var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		List<String> notes=NoteRepo.getAllNotesOrClues("table",name);
+		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}
 
 	@PutMapping("/room/table")
 	public Response table_note(@RequestBody Map<String, Object> payload) {
 		var response_text="You try to atttach note to the tables edge.";
+        var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
         if (payload.keySet().contains("content"))
+		{
 		    response_text="You write a note saying: '"+payload.get("content").toString()+"' and attach it.";
+			NoteRepo.createNote("table",payload.get("content").toString(),name);
+		}
         else
             response_text="You decide not to write anything.Note instantly disappiers";
-        return new Response(counter.incrementAndGet(), response_text);
+		
+        return new Response(counter.incrementAndGet(), response_text,name);
 	}
 
 	@PostMapping("/room/table")
