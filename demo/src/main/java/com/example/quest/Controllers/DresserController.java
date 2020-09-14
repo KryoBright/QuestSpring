@@ -18,12 +18,12 @@ public class DresserController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/dresser")
-	public Response dresser_desc(@RequestBody Map<String, Object> payload) {
+	public Response dresser_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="A regular dresser it has dresses and suit inside.There is a keyhole on back of it";
 		var name="";
-        if (payload.keySet().contains("name"))
+        if (!gotName.equals("noname"))
 		{
-			name=UserRepo.createUser(payload.get("name").toString());
+			name=UserRepo.createUser(gotName);
 		}
 		else
 		{

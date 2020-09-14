@@ -18,12 +18,12 @@ public class TableController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table")
-	public Response table_desc(@RequestBody Map<String, Object> payload) {
+	public Response table_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="This is the table.Probably the most ordinary one.There is typewriter on top of it,box of fortune cookies and 3 sections underneath";
 		var name="";
-        if (payload.keySet().contains("name"))
+        if (!gotName.equals("noname"))
 		{
-			name=UserRepo.createUser(payload.get("name").toString());
+			name=UserRepo.createUser(gotName);
 		}
 		else
 		{

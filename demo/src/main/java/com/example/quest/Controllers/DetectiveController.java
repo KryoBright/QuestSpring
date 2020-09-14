@@ -20,12 +20,12 @@ public class DetectiveController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/detective")
-	public Response detective_desc(@RequestBody Map<String, Object> payload) {
+	public Response detective_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="You are the DETECTIVE.You generally look fine,most people would describe it as average.Not really an important person at all.";
 		var name="";
-        if (payload.keySet().contains("name"))
+        if (!gotName.equals("noname"))
 		{
-			name=UserRepo.createUser(payload.get("name").toString());
+			name=UserRepo.createUser(gotName);
 		}
 		else
 		{
