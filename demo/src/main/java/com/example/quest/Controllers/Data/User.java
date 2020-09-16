@@ -10,6 +10,10 @@ public class User{
 
     boolean brokeWindow=false;
 
+    boolean sec1=false;
+
+    boolean sec3=false;
+
     String typeWriterQueue="'dQ_4w9WgXcQ 2 3 w r' \n";
 
     String events="000000000000";

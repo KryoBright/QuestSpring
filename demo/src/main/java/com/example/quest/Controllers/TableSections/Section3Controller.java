@@ -18,18 +18,34 @@ public class Section3Controller {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/sections/3")
-	public Response sec3_desc(@RequestParam(value = "key", defaultValue = "noname") String key) {
+	public Response sec3_desc(@RequestParam(value = "key", defaultValue = "noname") String gotKey,
+							  @RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="Lower section under the table.It has word lock for very long words.";
-        //retrive "if opened" from database
-        if (!key.equals("noname"))
+        var name="";
+        if (!gotName.equals("noname"))
 		{
-			if (key.equals("key_encrypted"))
-			{	
-            //retrive clues from database
-			}
-			else
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
+		if (UserRepo.userOpened3(name))
+		{
+			if (!gotKey.equals("noname"))
+
 			{
-				response_text=response_text+"You enter your key.It is invalid.";
+				if (gotKey.equals("encrypted_key"))
+				{	
+					List<String> notes=NoteRepo.getAllNotesOrClues("sec3",name);
+					return new Response(counter.incrementAndGet(), response_text,name,notes);
+				}
+				else
+				{
+					response_text=response_text+"You enter your key.It is invalid.";
+				}
 			}
 		}
 
