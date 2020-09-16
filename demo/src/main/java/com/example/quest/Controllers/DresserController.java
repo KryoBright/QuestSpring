@@ -30,6 +30,7 @@ public class DresserController {
 			name=UserRepo.createUser();
 			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
 		}
+		UserRepo.messageTW(name,"Airin: There are my dresses in this dresser.I do try to wear them time to time...",5);
 		List<String> notes=NoteRepo.getAllNotesOrClues("dresser",name);
 		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}

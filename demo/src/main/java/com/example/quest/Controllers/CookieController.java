@@ -55,6 +55,7 @@ public class CookieController {
 			name=UserRepo.createUser();
 			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
 		}
+		UserRepo.messageTW(name,"Airin: I am pretty sure there was a password somewhere in cookies.Just keep looking",1);
 		List<String> notes=NoteRepo.getAllNotesOrClues("cookie",name);
 		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}
