@@ -21,7 +21,17 @@ public class Section3Controller {
 	public Response sec3_desc(@RequestParam(value = "key", defaultValue = "noname") String gotKey,
 							  @RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="Lower section under the table.It has word lock for very long words.";
-        //retrive "if opened" from database
+        var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
 		if (UserRepo.userOpened3(name))
 		{
 			if (!gotKey.equals("noname"))
@@ -30,7 +40,7 @@ public class Section3Controller {
 				if (gotKey.equals("encrypted_key"))
 				{	
 					List<String> notes=NoteRepo.getAllNotesOrClues("sec3",name);
-					return new Response(counter.incrementAndGet(), response_text,notes);
+					return new Response(counter.incrementAndGet(), response_text,name,notes);
 				}
 				else
 				{

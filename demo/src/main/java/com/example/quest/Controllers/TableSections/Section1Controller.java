@@ -34,7 +34,7 @@ public class Section1Controller {
 		if (UserRepo.userOpened1(name))
 		{
 			List<String> notes=NoteRepo.getAllNotesOrClues("sec1",name);
-			return new Response(counter.incrementAndGet(), response_text,notes);
+			return new Response(counter.incrementAndGet(), response_text,name,notes);
 		}
 		return new Response(counter.incrementAndGet(), response_text);
 	}

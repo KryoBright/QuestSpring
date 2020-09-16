@@ -19,7 +19,7 @@ public class TypewriterController {
 
 	@GetMapping("/room/table/typewriter")
 	public Response typewriter_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
-		var response_text="Old typewriter. One single phrase typed on top of the page:'dQ_4w9WgXcQ 2 3 w r'. It doesn't seem as something understandable,but is still somewhat familiar.";
+		var response_text="Old typewriter..";
 		var name="";
         if (!gotName.equals("noname"))
 		{

@@ -36,7 +36,7 @@ public class Section2Controller {
 			if (gotKey.equals("dqw4w9wgxcq"))
 			{	
 				List<String> notes=NoteRepo.getAllNotesOrClues("sec1",name);
-				return new Response(counter.incrementAndGet(), response_text,notes);
+				return new Response(counter.incrementAndGet(), response_text,name,notes);
 			}
 			else
 			{
