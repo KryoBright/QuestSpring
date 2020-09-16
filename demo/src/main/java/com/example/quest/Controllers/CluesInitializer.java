@@ -20,10 +20,10 @@ public class CluesInitializer {
 
 	@PostMapping("/clues/init")
 	public Response initial() {
-        NoteRepo.createClue("backpanel","There is no more than 1 person in this room in any given moment.")
-        NoteRepo.createClue("sec1","Airin is as dead as you.")
-        NoteRepo.createClue("sec2","Culpit may or may not be here.")
-        NoteRepo.createClue("sec3","Dead person had no corpse")
+        NoteRepo.createClue("backpanel","There is no more than 1 person in this room in any given moment.");
+        NoteRepo.createClue("sec1","Airin is as dead as you.");
+        NoteRepo.createClue("sec2","Culpit may or may not be here.");
+        NoteRepo.createClue("sec3","Dead person had no corpse");
 		var response_text="Initialized successfully";
 		return new Response(counter.incrementAndGet(), response_text);
 	}

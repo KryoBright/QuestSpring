@@ -66,8 +66,22 @@ public class TableController {
 	}
 
 	@DeleteMapping("/room/table")
-	public Response table_hit() {
+	public Response table_hit(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
+		
 		var response_text="You hit table.It makes sound as if something was breaking inside it,but nothing changes.";
+		
+		var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
+		UserRepo.userOpen1(name);
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 }

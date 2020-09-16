@@ -56,7 +56,7 @@ public class CookieController {
 			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
 		}
 		List<String> notes=NoteRepo.getAllNotesOrClues("cookie",name);
-		return new Response(counter.incrementAndGet(), response_text,name,notes);=
+		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}
 
 	@PutMapping("/room/table/cookies")

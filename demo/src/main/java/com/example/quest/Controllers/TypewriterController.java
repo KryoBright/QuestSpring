@@ -48,8 +48,21 @@ public class TypewriterController {
 	}
 
 	@DeleteMapping("/room/table/typewriter")
-	public Response typewriter_hit() {
+	public Response typewriter_hit(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="You hit typewriter.It doesn't even move on slightest.You are hurt much more,on the other hand.";
+
+		var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
+		UserRepo.userOpen3(name);
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 }
