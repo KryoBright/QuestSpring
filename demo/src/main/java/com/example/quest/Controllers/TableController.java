@@ -18,12 +18,12 @@ public class TableController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table")
-	public Response table_desc(@RequestBody Map<String, Object> payload) {
+	public Response table_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="This is the table.Probably the most ordinary one.There is typewriter on top of it,box of fortune cookies and 3 sections underneath";
 		var name="";
-        if (payload.keySet().contains("name"))
+        if (!gotName.equals("noname"))
 		{
-			name=UserRepo.createUser(payload.get("name").toString());
+			name=UserRepo.createUser(gotName);
 		}
 		else
 		{
@@ -67,7 +67,6 @@ public class TableController {
 
 	@DeleteMapping("/room/table")
 	public Response table_hit(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
-		
 		var response_text="You hit table.It makes sound as if something was breaking inside it,but nothing changes.";
 		
 		var name="";
@@ -80,8 +79,9 @@ public class TableController {
 			name=UserRepo.createUser();
 			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
 		}
-
 		UserRepo.userOpen1(name);
+		UserRepo.messageTW(name,"Airin: Are you trying to break all this place to nothing? It is no use. Not as if I tried...",10);
+		
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 }

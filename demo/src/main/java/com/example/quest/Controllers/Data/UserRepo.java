@@ -10,7 +10,7 @@ public class UserRepo{
     static String createUser()
     {
         User tmpUs=new User();
-        tmpUs.id=Integer.toString(users.size());
+        tmpUs.id=Integer.toString(users.size()+1);
         users.put(tmpUs.id,tmpUs);
         return tmpUs.id;
     }
@@ -58,12 +58,17 @@ public class UserRepo{
         return true;
     }
 
-    static boolean messageTW(String key,String text)
+    static boolean messageTW(String key,String text,Integer event)
     {
         if (!users.containsKey(key))
             return false;
         else 
-            users.get(key).typeWriterQueue=users.get(key).typeWriterQueue+text+"\n";
+            if ((event==-1)||(users.get(key).events.charAt(event)=='0'))
+            {
+                if (event!=-1)
+                    users.get(key).events=users.get(key).events.substring(0,event)+"1"+users.get(key).events.substring(event+1);
+                users.get(key).typeWriterQueue=users.get(key).typeWriterQueue+text+"\n";
+            }
         return true;
     }
 
@@ -104,4 +109,13 @@ public class UserRepo{
             return true;
         }
     }
+
+    static String getUserTW(String key)
+    {
+        if (!users.containsKey(key))
+            return "";
+        else 
+            return users.get(key).typeWriterQueue;
+    }
+
 }

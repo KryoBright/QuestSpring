@@ -20,6 +20,7 @@ public class Section1Controller {
 	@GetMapping("/room/table/sections/1")
 	public Response sec1_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="Top section under the table.It doesn't seem to have any kind of lock outside.";
+
 		var name="";
         if (!gotName.equals("noname"))
 		{

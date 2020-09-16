@@ -18,18 +18,19 @@ public class DresserController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/dresser")
-	public Response dresser_desc(@RequestBody Map<String, Object> payload) {
+	public Response dresser_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="A regular dresser it has dresses and suit inside.There is a keyhole on back of it";
 		var name="";
-        if (payload.keySet().contains("name"))
+        if (!gotName.equals("noname"))
 		{
-			name=UserRepo.createUser(payload.get("name").toString());
+			name=UserRepo.createUser(gotName);
 		}
 		else
 		{
 			name=UserRepo.createUser();
 			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
 		}
+		UserRepo.messageTW(name,"Airin: There are my dresses in this dresser.I do try to wear them time to time...",5);
 		List<String> notes=NoteRepo.getAllNotesOrClues("dresser",name);
 		return new Response(counter.incrementAndGet(), response_text,name,notes);
 	}

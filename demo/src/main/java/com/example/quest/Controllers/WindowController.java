@@ -18,16 +18,16 @@ public class WindowController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/window")
-	public Response window_desc(@RequestBody Map<String, Object> payload) {
+	public Response window_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="The window.It looks like a hole in a wall with some darkish glass in it.";
         if (true)
             response_text=response_text+"Through broken window you can see nothing. It's not even empty space,it's just nothing.";
         else
             response_text=response_text+"It is impossible to see anything throgh glass. It feels as if you were staring at the wall";
 		var name="";
-        if (payload.keySet().contains("name"))
+        if (!gotName.equals("noname"))
 		{
-			name=UserRepo.createUser(payload.get("name").toString());
+			name=UserRepo.createUser(gotName);
 		}
 		else
 		{
@@ -70,7 +70,7 @@ public class WindowController {
 	}
 
 	@DeleteMapping("/room/window")
-	public Response window_hit() {
+	public Response window_hit(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="";
         if (!true)
         {
@@ -82,6 +82,18 @@ public class WindowController {
             response_text="You stick you hand into window.Suddenly,glass starts to regenerate and painfully cuts your hand.You barely manage to escape";
             //smashed=false;
         }
+		var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		UserRepo.messageTW(name,"Airin: I think it is not window. Maybe some stupid metaphoric concept? I mean,I can be crazy, you can't see throught as well,can you?",7);
+		
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 }

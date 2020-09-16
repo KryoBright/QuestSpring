@@ -25,6 +25,7 @@ public class Section3Controller {
 		if (UserRepo.userOpened3(name))
 		{
 			if (!gotKey.equals("noname"))
+
 			{
 				if (gotKey.equals("encrypted_key"))
 				{	

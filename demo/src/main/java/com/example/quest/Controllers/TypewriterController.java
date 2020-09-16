@@ -18,19 +18,45 @@ public class TypewriterController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/typewriter")
-	public Response typewriter_desc() {
-		var response_text="Old typewriter. One single phrase typed on top of the page:'dQ_4w9WgXcQ 2 3 w r'. It doesn't seem as something understandable,but is still somewhat familiar";
-
+	public Response typewriter_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
+		var response_text="Old typewriter. One single phrase typed on top of the page:'dQ_4w9WgXcQ 2 3 w r'. It doesn't seem as something understandable,but is still somewhat familiar.";
+		var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		UserRepo.messageTW(name,"Airin: Well,hello there,finally noticed that,huh? Anyway,I am Airin,I own this place. Kind of. I am not in the best condition to enforce any rules... But I still can!",0);
+		UserRepo.messageTW(name,"Airin: Whatever.You are detective,right? I will try to help as much as possible...But I can't tell much,I wasn't here.",11);
+		response_text=response_text+UserRepo.getUserTW(name);
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 
 	@PutMapping("/room/table/typewriter")
 	public Response typewriter_note(@RequestBody Map<String, Object> payload) {
 		var response_text="You try to type something ona typewriter.";
+		
+		var name="";
+        if (payload.keySet().contains("name"))
+		{
+			name=UserRepo.createUser(payload.get("name").toString());
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+
         if (payload.keySet().contains("content"))
         {
 		    response_text="You write : '"+payload.get("content").toString()+"'.";
             response_text=response_text+"Typewriter makes a beeping sound as the new message appiers out of nowhere.";
+			UserRepo.messageTW(name,"You: "+payload.get("content").toString(),-1);
+		
         }
         else
         {
