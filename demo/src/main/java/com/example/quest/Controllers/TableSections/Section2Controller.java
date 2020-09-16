@@ -18,14 +18,25 @@ public class Section2Controller {
 	private final AtomicLong counter = new AtomicLong();
 
 	@GetMapping("/room/table/sections/2")
-	public Response sec2_desc(@RequestBody Map<String, Object> payload) {
+	public Response sec2_desc(@RequestParam(value = "key", defaultValue = "noname") String gotKey,
+							  @RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="Middle section under the table.It has word lock for 11 symbols.";
-        //retrive "if opened" from database
-        if (payload.keySet().contains("key"))
+		var name="";
+        if (!gotName.equals("noname"))
 		{
-			if (payload.get("key")=="dqw4w9wgxcq")
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+        if (!gotKey.equals("noname"))
+		{
+			if (gotKey.equals("dqw4w9wgxcq"))
 			{	
-            //retrive clues from database
+				List<String> notes=NoteRepo.getAllNotesOrClues("sec1",name);
+				return new Response(counter.incrementAndGet(), response_text,notes);
 			}
 			else
 			{

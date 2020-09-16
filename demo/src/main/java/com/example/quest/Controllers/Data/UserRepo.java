@@ -67,4 +67,41 @@ public class UserRepo{
         return true;
     }
 
+    static boolean userOpened1(String key)
+    {
+        if (!users.containsKey(key))
+            return false;
+        else 
+            return users.get(key).sec1;
+    }
+
+    static boolean userOpened3(String key)
+    {
+        if (!users.containsKey(key))
+            return false;
+        else 
+            return users.get(key).sec3;
+    }
+
+    static boolean userOpen1(String key)
+    {
+        if (!users.containsKey(key))
+            return false;
+        else 
+        {
+            users.get(key).sec1=true;
+            return true;
+        }
+    }
+
+    static boolean userOpen3(String key)
+    {
+        if (!users.containsKey(key))
+            return false;
+        else 
+        {
+            users.get(key).sec3=true;
+            return true;
+        }
+    }
 }
