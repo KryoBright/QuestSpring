@@ -70,7 +70,7 @@ public class WindowController {
 	}
 
 	@DeleteMapping("/room/window")
-	public Response window_hit() {
+	public Response window_hit(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="";
         if (!true)
         {
@@ -82,6 +82,18 @@ public class WindowController {
             response_text="You stick you hand into window.Suddenly,glass starts to regenerate and painfully cuts your hand.You barely manage to escape";
             //smashed=false;
         }
+		var name="";
+        if (!gotName.equals("noname"))
+		{
+			name=UserRepo.createUser(gotName);
+		}
+		else
+		{
+			name=UserRepo.createUser();
+			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		UserRepo.messageTW(name,"Airin: I think it is not window. Maybe some stupid metaphoric concept? I mean,I can be crazy, you can't see throught as well,can you?",7);
+		
 		return new Response(counter.incrementAndGet(), response_text);
 	}
 }
