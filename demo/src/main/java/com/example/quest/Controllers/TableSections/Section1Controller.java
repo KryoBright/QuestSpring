@@ -20,9 +20,7 @@ public class Section1Controller {
 	@GetMapping("/room/table/sections/1")
 	public Response sec1_desc(@RequestParam(value = "name", defaultValue = "noname") String gotName) {
 		var response_text="Top section under the table.It doesn't seem to have any kind of lock outside.";
-        //retrive "if opened" from database
-        //if (true)
-            //retrive clues from database
+
 		var name="";
         if (!gotName.equals("noname"))
 		{
@@ -32,6 +30,11 @@ public class Section1Controller {
 		{
 			name=UserRepo.createUser();
 			response_text=response_text+"You are known as '"+name+"'.Please,pass you name as JSON attribute in future.";
+		}
+		if (UserRepo.userOpened1(name))
+		{
+			List<String> notes=NoteRepo.getAllNotesOrClues("sec1",name);
+			return new Response(counter.incrementAndGet(), response_text,notes);
 		}
 		return new Response(counter.incrementAndGet(), response_text);
 	}
